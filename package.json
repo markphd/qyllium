@@ -1,0 +1,22 @@
+{
+  "name": "Qyllium",
+  "version": "0.1.0",
+  "description": "A notes app",
+  "repository": "https://github.com/joshavanier/qyllium",
+  "main": "./main.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^1.8.1",
+    "electron-prebuilt": "^1.4.13"
+  },
+  "dependencies": {
+    "electron-json-storage": "^4.0.2",
+    "electron-packager": "^8.4.0",
+    "electron-reload": "^1.2.2",
+    "electron-storage": "^1.0.7",
+    "shelljs": "0.7.8"
+  }
+}
