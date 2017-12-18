@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Qyllium</title>
+  <meta name="author" content="Josh Avanier">
+  <meta name="description" content="A simple notes app">
+  <link rel="stylesheet" href="css/macian.min.css">
+</head>
+<body id="app" class="noselect r hf cn p4">
+
+  <form id="cmd" class="psf b0 l0 wf f6" action="#" onsubmit="return false;" autocomplete="off" spellcheck="false">
+    <input type="text" class="wf bg-0 blanc on bn p3" id="console" autofocus="autofocus" placeholder="Enter a task, note, or event" />
+  </form>
+
+  <div id="today" class="c4 c4-m hf oya">
+    <h3 class="mb3 f6 fwn">Today</h3>
+
+    <div class="h1">
+      <button id="b-mall" class="pv1 mtab on bg-cl of mr3" onclick="Qyllium.tab('mall', 'msect', 'mtab')">All</button>
+      <button id="b-mtsk" class="pv1 mtab on bg-cl o5 mr3" onclick="Qyllium.tab('mtsk', 'msect', 'mtab')">Tasks</button>
+      <button id="b-meve" class="pv1 mtab on bg-cl o5 mr3" onclick="Qyllium.tab('meve', 'msect', 'mtab')">Events</button>
+      <button id="b-mnot" class="pv1 mtab on bg-cl o5 mr3" onclick="Qyllium.tab('mnot', 'msect', 'mtab')">Notes</button>
+    </div>
+
+    <div id="mall" class="nodrag msect h8 oya">
+      <ul id="todayAll" class="mb4 lsn f6 lhc"></ul>
+    </div>
+
+    <div id="mtsk" class="nodrag dn msect h8 oya">
+      <ul id="todayTasks" class="mb4 lsn f6 lhc"></ul>
+    </div>
+
+    <div id="meve" class="nodrag dn msect h8 oya">
+      <ul id="todayEvents" class="mb4 lsn f6 lhc"></ul>
+    </div>
+
+    <div id="mnot" class="nodrag dn msect h8 oya">
+      <ul id="todayNotes" class="mb4 lsn f6 lhc"></ul>
+    </div>
+  </div>
+
+  <div id="details" class="dn nodrag c8 c8-m pl4 hf oya">
+    <!-- <h3 class="mb3 f6 fwn">Journal</h3> -->
+
+    <div class="h1">
+      <!-- <button id="b-ovw" class="pv1 tab on bg-cl of mr3" onclick="Qyllium.tab('ovw', 'sect', 'tab')">Overview</button> -->
+      <button id="b-tsk" class="pv1 tab on bg-cl of mr3" onclick="Qyllium.tab('tsk', 'sect', 'tab')">Tasks</button>
+      <button id="b-eve" class="pv1 tab on bg-cl o5 mr3" onclick="Qyllium.tab('eve', 'sect', 'tab')">Events</button>
+      <button id="b-not" class="pv1 tab on bg-cl o5 mr3" onclick="Qyllium.tab('not', 'sect', 'tab')">Notes</button>
+      <button id="b-gui" class="pv1 tab on bg-cl o5 mr3" onclick="Qyllium.tab('gui', 'sect', 'tab')">Guide</button>
+    </div>
+
+    <!-- <div id="ovw" class="sect h9 r">
+
+      <div class="c9 c9-m pr4 hf oy">
+        <h4 id="dateView" class="mb3 f6 upc tk"></h4>
+        <ol id="dateList" class="mb4 lsn f6 lhc"></ol>
+      </div>
+
+      <div class="c3 c3-m hf oya">
+        <ul id="dateNav" class="lsn f6 lhc"></ul>
+      </div>
+    </div> -->
+
+    <div id="tsk" class="sect h9 r hf oya">
+      <div class="h1">
+        <button id="b-tpen" class="pv1 ttab on bg-cl of mr3" onclick="Qyllium.tab('tpen', 'tsect', 'ttab')">Pending</button>
+        <button id="b-tarc" class="pv1 ttab on bg-cl o5 mr3" onclick="Qyllium.tab('tarc', 'tsect', 'ttab')">Completed</button>
+      </div>
+
+      <div id="tpen" class="tsect h9 oya">
+        <ul id="pendingTaskList" class="mb4 lsn f6 lhc"></ul>
+      </div>
+
+      <div id="tarc" class="dn tsect h9 oya">
+        <ul id="completedTaskList" class="mb4 lsn f6 lhc"></ul>
+      </div>
+    </div>
+
+    <div id="eve" class="dn sect h9">
+      <div class="nodrag c9 c9-m pr4 hf oya">
+        <div class="h1">
+          <button id="b-eupc" class="pv1 etab on bg-cl of mr3" onclick="Qyllium.tab('eupc', 'esect', 'etab')">Upcoming</button>
+          <button id="b-epas" class="pv1 etab on bg-cl o5 mr3" onclick="Qyllium.tab('epas', 'esect', 'etab')">Past</button>
+        </div>
+
+        <div id="eupc" class="esect h9 oya">
+          <ul id="upcomingEvents" class="mb4 lsn f6 lhc"></ul>
+        </div>
+
+        <div id="epas" class="esect h9 oya">
+          <ul id="pastEvents" class="mb4 lsn f6 lhc"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="not" class="dn sect h9 oya">
+      <ul id="noteList" class="mb4 lsn f6 lhc"></ul>
+    </div>
+
+    <div id="gui" class="dn sect h9 f6 lhc oya">
+      <h3 class="mb3 f5">Console</h3>
+      <p class="mb4 m">Use the console for input. The console is summoned when you start typing. Here are a list of available commands:</p>
+
+      <p class="mb3 m">To add a note, simply type it in and press Enter:</p>
+      <div class="mb4 bl pl3 m">
+        <p class="mb2">Glaciers are cool</p>
+        <p>Fire burns</p>
+      </div>
+
+      <p class="mb3 m">To add a task, append it with a <b>+</b> sign:</p>
+      <div class="mb4 bl pl3 m">
+        <p class="mb2">+ Buy food</p>
+        <p>+ Pick up the mail</p>
+      </div>
+
+      <p class="mb3 m">To add an event, specify a time or date after an <b>@</b> symbol:</p>
+      <div class="mb4 bl pl3 m">
+        <p class="mb2">Presentation @ today 9:00</p>
+        <p class="mb2">Museum @ next Tuesday</p>
+        <p>Road trip @ December 23 2017</p>
+      </div>
+
+      <p class="mb3 m">If you have an existing data file (JSON), you can import it:</p>
+      <div class="mb4 bl pl3 m">
+        <p>import</p>
+      </div>
+
+      <p class="mb3 m">To export your data:</p>
+      <div class="mb4 bl pl3 m">
+        <p>export</p>
+      </div>
+
+      <h2 class="mb3 f5">Qyllium v0.1.0</h2>
+      <p class="mb4 m">Qyllium is a simple note-taking app designed for rapid capture of thoughts, notes, ideas, etc.</p>
+
+      <h3 class="mb3 f5">Contribution</h3>
+      <p class="mb3 m">This project is open-source and its source code is available on GitHub under the MIT License:</p>
+      <p class="bl pl3 mb4 m">github.com/joshavanier/qyllium</p>
+
+      <p class="mb3 m">If you have any thoughts, comments, suggestions, questions, or if you simply want to say hello:</p>
+      <p class="bl pl3 mb4 m">Twitter: @joshavanier</p>
+
+      <p class="mb5">&mdash; Josh</p>
+    </div>
+  </div>
+
+  <script src="data/user.js"></script>
+  <script src="js/qyllium.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/time.js"></script>
+  <script src="js/options.js"></script>
+  <script src="js/console.js"></script>
+
+  <script>
+    const {dialog,app} = require('electron').remote
+    const fs = require('fs')
+    Qyllium.init()
+  </script>
+
+</body>
+</html>
