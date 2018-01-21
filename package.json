@@ -15,6 +15,7 @@
     "electron-packager": "^8.4.0"
   },
   "dependencies": {
-    "aequirys": "1.1.1"
+    "aequirys": "1.1.1",
+    "moment": "^2.20.1"
   }
 }
