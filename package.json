@@ -1,6 +1,6 @@
 {
   "name": "Qyllium",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A notes app",
   "repository": "https://github.com/joshavanier/qyllium",
   "main": "./main.js",
