@@ -78,9 +78,9 @@ Qyllium.data = {
    * Get pending tasks
    * @returns {Object} Pending tasks
    */
-  getPendingTasks() {
+  getPendingTasks(arr = Qyllium.tasks) {
     let ent = []
-    Qyllium.tasks.map(e => !e.d && ent.push(e))
+    arr.map(e => !e.d && ent.push(e))
     return ent
   },
 
@@ -88,9 +88,9 @@ Qyllium.data = {
    * Get completed tasks
    * @returns {Object} Completed tasks
    */
-  getCompletedTasks() {
+  getCompletedTasks(arr = Qyllium.tasks) {
     let ent = []
-    Qyllium.tasks.map(e => e.d && ent.push(e))
+    arr.map(e => e.d && ent.push(e))
     return ent
   },
 
@@ -98,10 +98,10 @@ Qyllium.data = {
    * Get past events
    * @returns {Object} Past events
    */
-  getPastEvents() {
+  getPastEvents(arr = Qyllium.events) {
     let ent = []
 
-    Qyllium.events.map(e => {
+    arr.map(e => {
       if (Qyllium.time.convert(Qyllium.time.parse(e.d)).getTime() < new Date().getTime()) {
         ent.push(e)
       }
@@ -114,10 +114,10 @@ Qyllium.data = {
    * Get upcoming events
    * @returns {Object} Upcoming events
    */
-  getFutureEvents() {
+  getFutureEvents(arr = Qyllium.events) {
     let ent = []
 
-    Qyllium.events.map(e => {
+    arr.map(e => {
       if (Qyllium.time.convert(Qyllium.time.parse(e.d)).getTime() > new Date().getTime()) {
         ent.push(e)
       }
@@ -136,22 +136,18 @@ Qyllium.data = {
     return s.match(/\B\#\w\w+\b/g)
   },
 
-  listHashtags() {
+  listTags(ent) {
     let tags = []
 
-    const map = a => {
-      a.map(e => {
-        if (e.h !== undefined) {
-          !isEmpty(e.h) && e.h.map(i => {
-            tags.indexOf(i) === -1 && tags.push(i)
-          })
-        }
-      })
-    }
+    ent.map(e => {
+      if (e.h !== undefined) {
+        !isEmpty(e.h) && e.h.map(i => {
+          tags.indexOf(i) === -1 && tags.push(i)
+        })
+      }
+    })
 
-    map(Qyllium.tasks)
-    map(Qyllium.events)
-    map(Qyllium.notes)
+    console.log(tags)
 
     return tags
   },
@@ -161,21 +157,15 @@ Qyllium.data = {
    * @param {string} tag - Tag
    * @return {Object[]} Items under tag
    */
-  getItemsByTag(tag) {
+  getItemsByTag(tag, ent) {
     let items = []
 
-    const map = a => {
-      a.map(e => {
-        if (e.h !== undefined) {
-          !isEmpty(e.h) &&
-          e.h.map(i => i === tag && items.push(e))
-        }
-      })
-    }
-
-    map(Qyllium.tasks)
-    map(Qyllium.events)
-    map(Qyllium.notes)
+    ent.map(e => {
+      if (e.h !== undefined) {
+        !isEmpty(e.h) &&
+        e.h.map(i => i === tag && items.push(e))
+      }
+    })
 
     return items
   }

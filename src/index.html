@@ -15,9 +15,9 @@
   </form>
 
   <div id="today" class="c4 c4-m hf oya">
-    <h3 class="mb3 f6 fwn">Today</h3>
 
     <div class="h1">
+      <h3 class="dib mr3 f6 lhc">Q</h3>
       <button id="b-mall" class="pv1 mtab on bg-cl of mr3" onclick="Qyllium.tab('mall', 'msect', 'mtab')">All</button>
       <button id="b-mtsk" class="pv1 mtab on bg-cl o5 mr3" onclick="Qyllium.tab('mtsk', 'msect', 'mtab')">Tasks</button>
       <button id="b-meve" class="pv1 mtab on bg-cl o5 mr3" onclick="Qyllium.tab('meve', 'msect', 'mtab')">Events</button>
@@ -52,35 +52,32 @@
       <button id="b-gui" class="pv1 tab on bg-cl o5 mr3" onclick="Qyllium.tab('gui', 'sect', 'tab')">Guide</button>
     </div>
 
-    <!-- <div id="ovw" class="sect h9 r">
+    <div id="tsk" class="sect h9 r oya">
+      <div class="c8 c8-m pr4-m pr4-l hf oya">
+        <div class="h1">
+          <button id="b-tpen" class="pv1 ttab on bg-cl of mr3" onclick="Qyllium.tab('tpen', 'tsect', 'ttab')">Pending</button>
+          <button id="b-tarc" class="pv1 ttab on bg-cl o5 mr3" onclick="Qyllium.tab('tarc', 'tsect', 'ttab')">Completed</button>
+        </div>
 
-      <div class="c9 c9-m pr4 hf oy">
-        <h4 id="dateView" class="mb3 f6 upc tk"></h4>
-        <ol id="dateList" class="mb4 lsn f6 lhc"></ol>
+        <div id="tpen" class="tsect h9 oya">
+          <ul id="pendingTaskList" class="mb4 lsn f6 lhc"></ul>
+        </div>
+
+        <div id="tarc" class="dn tsect h9 oya">
+          <ul id="completedTaskList" class="mb4 lsn f6 lhc"></ul>
+        </div>
       </div>
 
-      <div class="c3 c3-m hf oya">
-        <ul id="dateNav" class="lsn f6 lhc"></ul>
-      </div>
-    </div> -->
-
-    <div id="tsk" class="sect h9 r hf oya">
-      <div class="h1">
-        <button id="b-tpen" class="pv1 ttab on bg-cl of mr3" onclick="Qyllium.tab('tpen', 'tsect', 'ttab')">Pending</button>
-        <button id="b-tarc" class="pv1 ttab on bg-cl o5 mr3" onclick="Qyllium.tab('tarc', 'tsect', 'ttab')">Completed</button>
-      </div>
-
-      <div id="tpen" class="tsect h9 oya">
-        <ul id="pendingTaskList" class="mb4 lsn f6 lhc"></ul>
-      </div>
-
-      <div id="tarc" class="dn tsect h9 oya">
-        <ul id="completedTaskList" class="mb4 lsn f6 lhc"></ul>
+      <div class="c4 c4-m hf oya">
+        <div class="h1">
+          <button class="pv1 ttab on bg-cl o5" onclick="Qyllium.refresh()">Clear</button>
+        </div>
+        <ul id="taskTags" class="lsn f6 lhc"></ul>
       </div>
     </div>
 
     <div id="eve" class="dn sect h9">
-      <div class="nodrag c9 c9-m pr4 hf oya">
+      <div class="c8 c8-m pr4-m pr4-l hf oya">
         <div class="h1">
           <button id="b-eupc" class="pv1 etab on bg-cl of mr3" onclick="Qyllium.tab('eupc', 'esect', 'etab')">Upcoming</button>
           <button id="b-epas" class="pv1 etab on bg-cl o5 mr3" onclick="Qyllium.tab('epas', 'esect', 'etab')">Past</button>
@@ -94,10 +91,25 @@
           <ul id="pastEvents" class="mb4 lsn f6 lhc"></ul>
         </div>
       </div>
+
+      <div class="c4 c4-m hf oya">
+        <div class="h1">
+          <button class="pv1 ttab on bg-cl o5" onclick="Qyllium.refresh()">Clear</button>
+        </div>
+        <ul id="eventTags" class="lsn f6 lhc"></ul>
+      </div>
     </div>
 
     <div id="not" class="dn sect h9 oya">
-      <ul id="noteList" class="mb4 lsn f6 lhc"></ul>
+      <div class="c8 c8-m pr4-m pr4-l hf oya">
+        <ul id="noteList" class="mb4 lsn f6 lhc"></ul>
+      </div>
+      <div class="c4 c4-m hf oya">
+        <div class="h1">
+          <button class="pv1 ttab on bg-cl o5" onclick="Qyllium.refresh()">Clear</button>
+        </div>
+        <ul id="noteTags" class="lsn f6 lhc"></ul>
+      </div>
     </div>
 
     <div id="gui" class="dn sect h9 f6 lhc oya">

@@ -51,6 +51,38 @@ var Qyllium = {
     }
   },
 
+  view(mode, tag) {
+    let ent = []
+
+    if (mode === 'task') {
+      ent = Qyllium.tasks
+    } else if (mode === 'event') {
+      ent = Qyllium.events
+    } else if (mode === 'note') {
+      ent = Qyllium.notes
+    } else return
+
+    const list = Qyllium.data.getItemsByTag(tag, ent)
+
+    if (mode === 'task') {
+      clear('pendingTaskList')
+      clear('completedTaskList')
+
+      Qyllium.list(Qyllium.data.getPendingTasks(list), 'pendingTaskList')
+      Qyllium.list(Qyllium.data.getCompletedTasks(list), 'completedTaskList')
+    } else if (mode === 'event') {
+      clear('upcomingEvents')
+      clear('pastEvents')
+
+      Qyllium.list(Qyllium.data.getFutureEvents(list), 'upcomingEvents')
+      Qyllium.list(Qyllium.data.getPastEvents(list), 'pastEvents')
+    } else if (mode === 'note') {
+      clear('noteList')
+
+      Qyllium.list(list, 'noteList')
+    } else return
+  },
+
   item: {
 
     /**
@@ -198,17 +230,20 @@ var Qyllium = {
     })
   },
 
-  hashNav() {
-    const tags = Qyllium.data.listHashtags()
-
-    console.log(tags)
+  hashNav(mode, ent, con) {
+    const tags = Qyllium.data.listTags(ent)
 
     tags.map(e => {
       const li = document.createElement('li')
-      li.className = 'mt3 pt3 bt red'
-      li.innerHTML = e
-      // li.setAttribute('onclick', `Qyllium.dateView('${e}')`)
-      document.getElementById('hashNav').appendChild(li)
+      const a = create('a')
+      li.className = 'mt3 pt3 bt'
+      a.className = 'p1 hvn c-pt'
+      a.style.backgroundColor = Qyllium.config.ui.colour
+      a.style.color = Qyllium.config.ui.bg
+      a.innerHTML = e
+      a.setAttribute('onclick', `Qyllium.view('${mode}', '${e}')`)
+      li.appendChild(a)
+      document.getElementById(con).appendChild(li)
     })
   },
 
@@ -239,7 +274,7 @@ var Qyllium = {
   },
 
   clear() {
-    'todayAll todayTasks todayEvents todayNotes pendingTaskList completedTaskList upcomingEvents pastEvents noteList'.split(' ').map(e => document.getElementById(e).innerHTML = '')
+    'todayAll todayTasks todayEvents todayNotes pendingTaskList completedTaskList taskTags upcomingEvents pastEvents eventTags noteList noteTags'.split(' ').map(e => document.getElementById(e).innerHTML = '')
   },
 
   init() {
@@ -290,7 +325,9 @@ var Qyllium = {
     Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.events, today), 'todayEvents')
     Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.notes, today), 'todayNotes')
 
-    Qyllium.hashNav()
+    Qyllium.hashNav('task', Qyllium.tasks, 'taskTags')
+    Qyllium.hashNav('event', Qyllium.events, 'eventTags')
+    Qyllium.hashNav('note', Qyllium.notes, 'noteTags')
 
     Qyllium.list(Qyllium.data.getPendingTasks(), 'pendingTaskList')
     Qyllium.list(Qyllium.data.getCompletedTasks(), 'completedTaskList')
