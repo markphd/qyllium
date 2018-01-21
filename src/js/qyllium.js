@@ -29,7 +29,6 @@ var Qyllium = {
     }
 
     localStorage.setItem('qylliumMode', Qyllium.expanded)
-    console.log(Qyllium.expanded)
   },
 
   /**

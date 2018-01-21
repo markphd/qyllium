@@ -147,8 +147,6 @@ Qyllium.data = {
       }
     })
 
-    console.log(tags)
-
     return tags
   },
 
