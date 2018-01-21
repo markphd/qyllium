@@ -10,11 +10,11 @@ Qyllium.data = {
     let events = []
     let notes = []
 
-    for (let i = 0, l = arr.length; i < l; i++) {
-      if (arr[i].c === 'task') tasks.push(arr[i])
-      else if (arr[i].c === 'event') events.push(arr[i])
-      else if (arr[i].c === 'note') notes.push(arr[i])
-    }
+    arr.map(e => {
+      if (e.c === 'task') tasks.push(e)
+      else if (e.c === 'event') events.push(e)
+      else if (e.c === 'note') notes.push(e)
+    })
 
     Qyllium.tasks = tasks
     Qyllium.events = events
@@ -62,14 +62,14 @@ Qyllium.data = {
   getItemsByDate(arr, d = new Date()) {
     let ent = []
 
-    for (let i = 0, l = arr.length; i < l; i++) {
-      let a = Qyllium.time.convert(Qyllium.time.parse(arr[i].s))
+    arr.map(e => {
+      let a = Qyllium.time.convert(Qyllium.time.parse(e.s))
 
       a.getFullYear() === d.getFullYear()
       && a.getMonth() === d.getMonth()
       && a.getDate() === d.getDate()
-      && ent.push(arr[i])
-    }
+      && ent.push(e)
+    })
 
     return ent
   },
@@ -80,13 +80,7 @@ Qyllium.data = {
    */
   getPendingTasks() {
     let ent = []
-
-    for (let i = 0, l = Qyllium.tasks.length; i < l; i++) {
-      if (!Qyllium.tasks[i].d) {
-        ent.push(Qyllium.tasks[i])
-      }
-    }
-
+    Qyllium.tasks.map(e => !e.d && ent.push(e))
     return ent
   },
 
@@ -96,13 +90,7 @@ Qyllium.data = {
    */
   getCompletedTasks() {
     let ent = []
-
-    for (let i = 0, l = Qyllium.tasks.length; i < l; i++) {
-      if (Qyllium.tasks[i].d) {
-        ent.push(Qyllium.tasks[i])
-      }
-    }
-
+    Qyllium.tasks.map(e => e.d && ent.push(e))
     return ent
   },
 
@@ -113,11 +101,11 @@ Qyllium.data = {
   getPastEvents() {
     let ent = []
 
-    for (let i = 0, l = Qyllium.events.length; i < l; i++) {
-      if (Qyllium.time.convert(Qyllium.time.parse(Qyllium.events[i].d)).getTime() < new Date().getTime()) {
-        ent.push(Qyllium.events[i])
+    Qyllium.events.map(e => {
+      if (Qyllium.time.convert(Qyllium.time.parse(e.d)).getTime() < new Date().getTime()) {
+        ent.push(e)
       }
-    }
+    })
 
     return ent
   },
@@ -129,11 +117,11 @@ Qyllium.data = {
   getFutureEvents() {
     let ent = []
 
-    for (let i = 0, l = Qyllium.events.length; i < l; i++) {
-      if (Qyllium.time.convert(Qyllium.time.parse(Qyllium.events[i].d)).getTime() > new Date().getTime()) {
-        ent.push(Qyllium.events[i])
+    Qyllium.events.map(e => {
+      if (Qyllium.time.convert(Qyllium.time.parse(e.d)).getTime() > new Date().getTime()) {
+        ent.push(e)
       }
-    }
+    })
 
     return ent
   }

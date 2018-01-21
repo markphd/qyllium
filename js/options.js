@@ -33,7 +33,7 @@ Qyllium.options = {
    * @param {string} c - Calendrical system
    */
   setCalendar(c) {
-    if (c === 'aequirys' || c === 'monocal' || c === 'desamber' || c === 'gregorian') {
+    if (contains(c, 'aequirys gregorian')) {
       user.config.system.calendar = c
       Qyllium.options.update()
     }
@@ -44,7 +44,7 @@ Qyllium.options = {
    * @param {string} f - Time format
    */
   setTimeFormat(f) {
-    if (f === '24' || f === '12') {
+    if (contains(f, '24 12')) {
       user.config.system.timeFormat = f
       Qyllium.options.update()
     }

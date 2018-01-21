@@ -1,3 +1,5 @@
+const Aequirys = require('aequirys')
+
 Qyllium = window.Qyllium || {}
 Qyllium.time = {
 
@@ -33,13 +35,13 @@ Qyllium.time = {
    * @returns {string} Timestamp
    */
   stamp(t) {
-    let d = Qyllium.time.convert(t)
-    let f = Qyllium.config.system.timeFormat
+    const d = Qyllium.time.convert(t)
+    const f = Qyllium.config.system.timeFormat
 
     if (f === '24') {
-      let h = `0${d.getHours()}`
-      let m = `0${d.getMinutes()}`
-      let s = `0${d.getSeconds()}`
+      const h = `0${d.getHours()}`
+      const m = `0${d.getMinutes()}`
+      const s = `0${d.getSeconds()}`
 
       return `${h.substr(-2)}:${m.substr(-2)}:${s.substr(-2)}`
     } else if (f === '12') {
@@ -56,7 +58,7 @@ Qyllium.time = {
     let h = d.getHours()
     let m = d.getMinutes()
     let s = d.getSeconds()
-    let x = h >= 12 ? 'PM' : 'AM'
+    const x = h >= 12 ? 'PM' : 'AM'
 
     h = h % 12
     h = h ? h : 12
@@ -73,7 +75,7 @@ Qyllium.time = {
    * @returns {string} year, month, day
    */
   date(t) {
-    let a = Qyllium.time.convert(t)
+    const a = Qyllium.time.convert(t)
     return `${a.getFullYear()}${a.getMonth()}${a.getDate()}`
   },
 
@@ -82,17 +84,13 @@ Qyllium.time = {
    * @param {number} t - Unix time
    */
   displayDate(t) {
-    let a = Qyllium.time.convert(t)
-    let f = Qyllium.config.system.calendar
+    const a = Qyllium.time.convert(t)
+    const f = Qyllium.config.system.calendar
 
     if (f === 'gregorian') {
       return `${a.getFullYear()} ${a.getMonth() + 1} ${a.getDate()}`
-    } else if (f === 'monocal') {
-      return MONO.short(MONO.convert(a))
     } else if (f === 'aequirys') {
       return Aequirys.display(Aequirys.convert(a))
-    } else if (f === 'desamber') {
-      return Desamber.display(Desamber.convert(a))
     }
   },
 
@@ -102,38 +100,15 @@ Qyllium.time = {
    * @returns {string} Elapsed time
    */
   timeago(t) {
-    let sec = ((new Date()) - t) / 1E3
-    let min = Math.abs(Math.floor(sec / 60))
-
-    if (min === 0) {
-      return 'less than a minute ago'
-    }
-
-    if (min === 1) {
-      return 'a minute ago'
-    }
-
-    if (min < 59) {
-      return `${min} minutes ago`
-    }
-
-    if (min < 1440) {
-      return `${Math.floor(min / 60)} hours ago`
-    }
-
-    if (min < 2880) {
-      return 'yesterday'
-    }
-
-    if (min < 86400) {
-      return `${Math.floor(min / 1440)} days ago`
-    }
-
-    if (min < 1051199) {
-      return `${Math.floor(min / 43200)} months ago`
-    }
-
-    return `over ${Math.floor(min / 525960)} years ago`
+    const m = Math.abs(Math.floor((((new Date()) - t) / 1E3) / 60))
+    if (m === 0) return 'less than a minute ago'
+    if (m === 1) return 'a minute ago'
+    if (m < 59) return `${m} minutes ago`
+    if (m < 1440) return `${Math.floor(m / 60)} hours ago`
+    if (m < 2880) return 'yesterday'
+    if (m < 86400) return `${Math.floor(m / 1440)} days ago`
+    if (m < 1051199) return `${Math.floor(m / 43200)} months ago`
+    return `over ${Math.floor(m / 525960)} years ago`
   },
 
   /**
@@ -149,7 +124,7 @@ Qyllium.time = {
       return date
     }
 
-    let interval = 1
+    const interval = 1
     let list = []
     let current = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0)
 
@@ -168,14 +143,14 @@ Qyllium.time = {
    */
   parseDateTime(string) {
     Date.prototype.addDays = function(days) {
-      let date = new Date(this.valueOf())
+      const date = new Date(this.valueOf())
       date.setDate(date.getDate() + days)
       return date
     }
 
-    let str = string.split(' ')
-    let daysFull = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' ')
-    let daysAbb = 'Sun Mon Tue Wed Thu Fri Sat'.split(' ')
+    const str = string.split(' ')
+    const daysFull = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' ')
+    const daysAbb = 'Sun Mon Tue Wed Thu Fri Sat'.split(' ')
     let date = new Date()
     let datetime
 

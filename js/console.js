@@ -11,9 +11,9 @@ Qyllium.console = {
    * @param {string} i - Input
    */
   parse(i) {
-    let k = Qyllium.console.commands.indexOf(i.split(' ')[0].toLowerCase())
+    const k = Qyllium.console.commands.indexOf(i.split(' ')[0].toLowerCase())
 
-    if (k != -1) {
+    if (k !== -1) {
       switch (k) {
         case 0:
           Qyllium.console.set(i);
@@ -45,7 +45,7 @@ Qyllium.console = {
    * Import user data
    */
   importUser() {
-    let path = dialog.showOpenDialog({properties: ['openFile']})
+    const path = dialog.showOpenDialog({properties: ['openFile']})
 
 		if (!path) return
 
@@ -67,7 +67,7 @@ Qyllium.console = {
    * Export user data
    */
   exportUser() {
-    let data = JSON.stringify(JSON.parse(localStorage.getItem('qyllium')))
+    const data = JSON.stringify(JSON.parse(localStorage.getItem('qyllium')))
 
     dialog.showSaveDialog((fileName) => {
       if (fileName === undefined) return
@@ -85,8 +85,8 @@ Qyllium.console = {
    * @param {string} i - Input
    */
   addNote(i) {
-    let str = i.split(' ')
-    let start = Qyllium.time.toHex(new Date())
+    const str = i.split(' ')
+    const start = Qyllium.time.toHex(new Date())
     let tags = []
     let note = i
     let signifier = ''
@@ -110,10 +110,10 @@ Qyllium.console = {
    * @param {string} i - Input
    */
   addTask(i) {
-    let str = i.split(' ')
-    let start = Qyllium.time.toHex(new Date())
+    const str = i.split(' ')
+    const start = Qyllium.time.toHex(new Date())
     let tags = []
-    let note = i.slice(2)
+    const note = i.slice(2)
     let signifier = ''
 
     if (['!', '*'].indexOf(str[1]) !== -1) {
@@ -122,8 +122,8 @@ Qyllium.console = {
     }
 
     let hash = s => {
-      let regexp = /\B\#\w\w+\b/g
-      let result = s.match(regexp)
+      const regexp = /\B\#\w\w+\b/g
+      const result = s.match(regexp)
 
       if (result) {
         tags.push(result)
@@ -150,10 +150,10 @@ Qyllium.console = {
    * @param {string} i - Input
    */
   addEvent(i) {
-    let str = i.split(' ')
-    let at = i.indexOf('@')
+    const str = i.split(' ')
+    const at = i.indexOf('@')
+    const note = i.slice(0, at)
     let tags = []
-    let note = i.slice(0, at)
     let signifier = ''
 
     if (['!', '*'].indexOf(str[1]) !== -1) {
@@ -162,7 +162,7 @@ Qyllium.console = {
     }
 
     let hash = s => {
-      let result = s.match(/\B\#\w\w+\b/g)
+      const result = s.match(/\B\#\w\w+\b/g)
 
       if (result) {
         tags.push(result)
@@ -189,28 +189,28 @@ Qyllium.console = {
    * @param {string} i - Input
    */
   set(i) {
-    let c = i.split(' ')
-    let a = c[1].toLowerCase()
+    const c = i.split(' ')
+    const a = c[1].toLowerCase()
 
-    if (a === 'background' || a === 'bg') {
+    if (contains(a, 'background bg')) {
       Qyllium.options.setBG(c[2])
-    } else if (a === 'color' || a === 'colour' || a === 'text') {
+    } else if (contains(a, 'color colour text')) {
       Qyllium.options.setColour(c[2])
-    } else if (a === 'cal' || a === 'calendar') {
+    } else if (contains(a, 'cal calendar')) {
       Qyllium.options.setCalendar(c[2])
-    } else if (a === 'timeformat' || a === 'time') {
+    } else if (contains(a, 'timeformat time')) {
       Qyllium.options.setTimeFormat(c[2])
-    } else if (a === 'dateformat' || a === 'date') {
+    } else if (contains(a, 'dateformat date')) {
       Qyllium.options.setDateFormat(c[2])
     } else return
   },
 
   /**
-   * Invert interface colours
+   * Invert UI colours
    */
   invert() {
-    let bg = user.config.ui.bg
-    let c = user.config.ui.colour
+    const bg = user.config.ui.bg
+    const c = user.config.ui.colour
 
     user.config.ui.bg = c
     user.config.ui.colour = bg

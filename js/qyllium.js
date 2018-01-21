@@ -7,7 +7,7 @@
  * @license MIT
  */
 
-var win = require('electron').remote.getCurrentWindow()
+const win = require('electron').remote.getCurrentWindow()
 
 var Qyllium = {
 
@@ -17,6 +17,21 @@ var Qyllium = {
   notes: [],
   expanded: false,
 
+  toggleView() {
+    if (!Qyllium.expanded) {
+      win.setSize(800, 500)
+      Qyllium.expanded = true
+      document.getElementById('details').style.display = 'inline-block'
+    } else {
+      win.setSize(300, 500)
+      Qyllium.expanded = false
+      document.getElementById('details').style.display = 'none'
+    }
+
+    localStorage.setItem('qylliumMode', Qyllium.expanded)
+    console.log(Qyllium.expanded)
+  },
+
   /**
    * List items
    * @param {Object[]} arr - Array
@@ -24,7 +39,7 @@ var Qyllium = {
    */
   list(arr, con) {
     for (let i = arr.length - 1; i >= 0; i--) {
-      let li = document.createElement('li')
+      const li = document.createElement('li')
 
       if (arr[i].c === 'task') {
         Qyllium.item.addTask(arr[i], con)
@@ -44,9 +59,9 @@ var Qyllium = {
      * @param {string} con - Container
      */
     addTask(itm, con) {
-      let li = document.createElement('li')
-      let del = document.createElement('button')
-      let task = itm.d ? document.createElement('s') : document.createElement('span')
+      const li = document.createElement('li')
+      const del = document.createElement('button')
+      const task = itm.d ? document.createElement('s') : document.createElement('span')
 
       li.className = 'mt3 pt3 bt c-pt'
       task.innerHTML = itm.t
@@ -69,16 +84,16 @@ var Qyllium = {
      * @param {string} con - Container
      */
     addEvent(itm, con) {
-      let li = document.createElement('li')
-      let dt = document.createElement('span')
-      let ev = document.createElement('span')
-      let del = document.createElement('button')
-      let months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(' ')
-      let date = Qyllium.time.convert(Qyllium.time.parse(itm.d))
-      let today = new Date()
+      const li = document.createElement('li')
+      const dt = document.createElement('span')
+      const ev = document.createElement('span')
+      const del = document.createElement('button')
+      const months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(' ')
+      const date = Qyllium.time.convert(Qyllium.time.parse(itm.d))
+      const today = new Date()
 
-      let minutes = `0${date.getMinutes()}`.substr(-2)
-      let hours = `0${date.getHours()}`.substr(-2)
+      const minutes = `0${date.getMinutes()}`.substr(-2)
+      const hours = `0${date.getHours()}`.substr(-2)
 
       li.className = 'mt3 pt3 bt'
       dt.className = 'mr2 fwb'
@@ -103,9 +118,9 @@ var Qyllium = {
      * @param {string} con - Container
      */
     addNote(itm, con) {
-      let li = document.createElement('li')
-      let note = document.createElement('span')
-      let del = document.createElement('button')
+      const li = document.createElement('li')
+      const note = document.createElement('span')
+      const del = document.createElement('button')
 
       li.className = 'mt3 pt3 bt'
       note.innerHTML = itm.t
@@ -121,72 +136,74 @@ var Qyllium = {
       document.getElementById(con).appendChild(li)
     },
 
+    /**
+     * Set a task as done
+     * @param {number} id - Task ID
+     */
     doneTask(id) {
-      for (let i = 0, l = user.journal.length; i < l; i++) {
-        if (user.journal[i].s === id) {
-          user.journal[i].d = user.journal[i].d ? false : true
+      user.journal.map(e => {
+        if (e.s === id) {
+          e.d = e.d ? false : true
           Qyllium.options.update()
           Qyllium.refresh()
           return
         }
-      }
+      })
     },
 
     remove(id) {
-      for (let i = 0, l = user.journal.length; i < l; i++) {
-        if (user.journal[i].s === id) {
+      user.journal.map((e, i) => {
+        if (e.s === id) {
           user.journal.splice(i, 1)
           Qyllium.options.update()
           Qyllium.refresh()
           return
         }
-      }
+      })
     }
   },
 
   dateNav() {
-    let start = Qyllium.time.convert(
+    const start = Qyllium.time.convert(
       Qyllium.time.parse(user.journal[0].s)
     )
-    let end = Qyllium.time.convert(
-      Qyllium.time.parse(user.journal[user.journal.length - 1].s)
+    const end = Qyllium.time.convert(
+      Qyllium.time.parse(user.journal.slice(-1)[0].s)
     )
-    let dates = Qyllium.time.listDates(start, end).reverse()
-    let months = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')
+    const dates = Qyllium.time.listDates(start, end).reverse()
+    const months = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')
 
-    for (let i = 0, l = dates.length; i < l; i++) {
-      let dt = dates[i]
-
-      if (Qyllium.data.getItemsByDate(user.journal, dt).length !== 0) {
-        let li = document.createElement('li')
+    dates.map(e => {
+      if (Qyllium.data.getItemsByDate(user.journal, e).length !== 0) {
+        const li = document.createElement('li')
         li.className = 'mt3 pt3 bt'
-        li.innerHTML = `${months[dt.getMonth()]} ${dt.getDate()}`
-        // li.setAttribute('onclick', `Qyllium.dateView('${dt}')`)
+        li.innerHTML = `${months[e.getMonth()]} ${e.getDate()}`
+        // li.setAttribute('onclick', `Qyllium.dateView('${e}')`)
         document.getElementById('dateNav').appendChild(li)
       }
-    }
+    })
   },
 
   dateView(date) {
-    let ent = Qyllium.data.getItemsByDate(user.journal, date)
+    const ent = Qyllium.data.getItemsByDate(user.journal, date)
 
     document.getElementById('dateView').innerHTML = `${date.getMonth()} ${date.getDate()}`
     document.getElementById('dateList').innerHTML = ''
 
-    for (let i = 0, l = ent.length; i < l; i++) {
-      let li = document.createElement('li')
+    ent.map(e => {
+      const li = document.createElement('li')
       li.className = 'mt3 pt3 bt'
-      li.innerHTML = ent[i].t
+      li.innerHTML = e.t
       document.getElementById('dateList').appendChild(li)
-    }
+    })
   },
 
   /**
    * Open a tab
    */
   tab(s, g, t, v = false) {
-    let x = document.getElementsByClassName(g)
-    let b = document.getElementsByClassName(t)
+    const x = document.getElementsByClassName(g)
+    const b = document.getElementsByClassName(t)
 
     for (let i = 0, l = x.length; i < l; i++) {
       x[i].style.display = 'none'
@@ -208,11 +225,7 @@ var Qyllium = {
   },
 
   clear() {
-    let el = 'todayAll todayTasks todayEvents todayNotes pendingTaskList completedTaskList upcomingEvents pastEvents noteList'.split(' ')
-
-    for (let i = 0, l = el.length; i < l; i++) {
-      document.getElementById(el[i]).innerHTML = ''
-    }
+    'todayAll todayTasks todayEvents todayNotes pendingTaskList completedTaskList upcomingEvents pastEvents noteList'.split(' ').map(e => document.getElementById(e).innerHTML = '')
   },
 
   init() {
@@ -233,54 +246,50 @@ var Qyllium = {
     document.getElementById('app').style.backgroundColor = Qyllium.config.ui.bg
     document.getElementById('app').style.color = Qyllium.config.ui.colour
 
-    let detailsDisplay = ''
+    try {
+      JSON.parse(localStorage.getItem('qylliumMode'))
+
+      if (localStorage.hasOwnProperty('qylliumMode')) {
+        Qyllium.expanded = JSON.parse(localStorage.getItem('qylliumMode'))
+      } else {
+        localStorage.setItem('qylliumMode', false)
+      }
+    } catch(e) {
+      return
+    }
 
     if (!Qyllium.expanded) {
       win.setSize(300, 500)
-      detailsDisplay = 'none'
+      document.getElementById('details').style.display = 'none'
     } else {
       win.setSize(800, 500)
-      detailsDisplay = 'inline-block'
+      document.getElementById('details').style.display = 'inline-block'
     }
 
-    document.getElementById('details').style.display = detailsDisplay
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Tab') {
-        e.preventDefault()
-
-        if (!Qyllium.expanded) {
-          win.setSize(800, 500)
-          Qyllium.expanded = true
-          document.getElementById('details').style.display = 'inline-block'
-        } else {
-          win.setSize(300, 500)
-          Qyllium.expanded = false
-          document.getElementById('details').style.display = 'none'
-        }
-
-        con.focus()
-      }
-    })
-
-    let con = document.getElementById('console')
-
+    const con = document.getElementById('console')
     document.getElementById('cmd').addEventListener('submit', function() {
       Qyllium.console.parse(con.value)
       con.value = ''
       con.focus()
     })
 
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault()
+        Qyllium.toggleView()
+        document.getElementById('console').focus()
+      }
+    })
+
     if (user.journal.length === 0) return
     else Qyllium.data.parse(user.journal)
 
-    Qyllium.list(Qyllium.data.getItemsByDate(user.journal, new Date()), 'todayAll')
-    Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.tasks, new Date()), 'todayTasks')
-    Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.events, new Date()), 'todayEvents')
-    Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.notes, new Date()), 'todayNotes')
+    const today = new Date()
 
-    // Qyllium.dateNav()
-    // Qyllium.dateView(new Date())
+    Qyllium.list(Qyllium.data.getItemsByDate(user.journal, today), 'todayAll')
+    Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.tasks, today), 'todayTasks')
+    Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.events, today), 'todayEvents')
+    Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.notes, today), 'todayNotes')
 
     Qyllium.list(Qyllium.data.getPendingTasks(), 'pendingTaskList')
     Qyllium.list(Qyllium.data.getCompletedTasks(), 'completedTaskList')
