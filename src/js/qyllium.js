@@ -198,6 +198,20 @@ var Qyllium = {
     })
   },
 
+  hashNav() {
+    const tags = Qyllium.data.listHashtags()
+
+    console.log(tags)
+
+    tags.map(e => {
+      const li = document.createElement('li')
+      li.className = 'mt3 pt3 bt red'
+      li.innerHTML = e
+      // li.setAttribute('onclick', `Qyllium.dateView('${e}')`)
+      document.getElementById('hashNav').appendChild(li)
+    })
+  },
+
   /**
    * Open a tab
    */
@@ -275,6 +289,8 @@ var Qyllium = {
     Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.tasks, today), 'todayTasks')
     Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.events, today), 'todayEvents')
     Qyllium.list(Qyllium.data.getItemsByDate(Qyllium.notes, today), 'todayNotes')
+
+    Qyllium.hashNav()
 
     Qyllium.list(Qyllium.data.getPendingTasks(), 'pendingTaskList')
     Qyllium.list(Qyllium.data.getCompletedTasks(), 'completedTaskList')

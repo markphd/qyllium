@@ -87,7 +87,6 @@ Qyllium.console = {
   addNote(i) {
     const str = i.split(' ')
     const start = Qyllium.time.toHex(new Date())
-    let tags = []
     let note = i
     let signifier = ''
 
@@ -99,7 +98,8 @@ Qyllium.console = {
     user.journal.push({
       c: 'note',
       s: start,
-      t: note
+      t: note,
+      h: Qyllium.data.getHashtags(i)
     })
 
     Qyllium.options.update()
@@ -112,7 +112,6 @@ Qyllium.console = {
   addTask(i) {
     const str = i.split(' ')
     const start = Qyllium.time.toHex(new Date())
-    let tags = []
     const note = i.slice(2)
     let signifier = ''
 
@@ -121,25 +120,13 @@ Qyllium.console = {
       note = i.slice(4)
     }
 
-    let hash = s => {
-      const regexp = /\B\#\w\w+\b/g
-      const result = s.match(regexp)
-
-      if (result) {
-        tags.push(result)
-      } else {
-        return false
-      }
-    }
-
-    hash(i)
-
     user.journal.push({
       c: 'task',
       s: start,
       g: signifier,
       d: false,
-      t: note
+      t: note,
+      h: Qyllium.data.getHashtags(i)
     })
 
     Qyllium.options.update()
@@ -153,7 +140,6 @@ Qyllium.console = {
     const str = i.split(' ')
     const at = i.indexOf('@')
     const note = i.slice(0, at)
-    let tags = []
     let signifier = ''
 
     if (['!', '*'].indexOf(str[1]) !== -1) {
@@ -161,24 +147,13 @@ Qyllium.console = {
       note = i.slice(0, at)
     }
 
-    let hash = s => {
-      const result = s.match(/\B\#\w\w+\b/g)
-
-      if (result) {
-        tags.push(result)
-      } else {
-        return false
-      }
-    }
-
-    hash(i)
-
     user.journal.push({
       c: 'event',
       s: Qyllium.time.toHex(new Date()),
       g: signifier,
       d: Qyllium.time.parseDateTime(i.slice(at + 2)),
-      t: note
+      t: note,
+      h: Qyllium.data.getHashtags(i)
     })
 
     Qyllium.options.update()

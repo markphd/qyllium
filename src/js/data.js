@@ -124,5 +124,59 @@ Qyllium.data = {
     })
 
     return ent
+  },
+
+  /**
+   * Extract hashtags from entry
+   * @param {string} s - Entry
+   * @return {Object[]} - Hashtags
+   */
+  getHashtags(s) {
+    if (!s.includes('#')) return
+    return s.match(/\B\#\w\w+\b/g)
+  },
+
+  listHashtags() {
+    let tags = []
+
+    const map = a => {
+      a.map(e => {
+        if (e.h !== undefined) {
+          !isEmpty(e.h) && e.h.map(i => {
+            tags.indexOf(i) === -1 && tags.push(i)
+          })
+        }
+      })
+    }
+
+    map(Qyllium.tasks)
+    map(Qyllium.events)
+    map(Qyllium.notes)
+
+    return tags
+  },
+
+  /**
+   * Get items by tag
+   * @param {string} tag - Tag
+   * @return {Object[]} Items under tag
+   */
+  getItemsByTag(tag) {
+    let items = []
+
+    const map = a => {
+      a.map(e => {
+        if (e.h !== undefined) {
+          !isEmpty(e.h) &&
+          e.h.map(i => i === tag && items.push(e))
+        }
+      })
+    }
+
+    map(Qyllium.tasks)
+    map(Qyllium.events)
+    map(Qyllium.notes)
+
+    return items
   }
 }
