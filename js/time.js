@@ -1,4 +1,5 @@
 const Aequirys = require('aequirys')
+const moment = require('moment')
 
 Qyllium = window.Qyllium || {}
 Qyllium.time = {
@@ -142,19 +143,13 @@ Qyllium.time = {
    * @returns {Object} Date and time
    */
   parseDateTime(string) {
-    Date.prototype.addDays = function(days) {
-      const date = new Date(this.valueOf())
-      date.setDate(date.getDate() + days)
-      return date
-    }
-
     const str = string.split(' ')
     const daysFull = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' ')
     const daysAbb = 'Sun Mon Tue Wed Thu Fri Sat'.split(' ')
-    let date = new Date()
+    let date = moment()
     let datetime
 
-    let checkForTime = _ => {
+    const checkForTime = _ => {
       for (let i = 0, l = str.length; i < l; i++) {
         if (str[i].includes(':')) {
           return str[i]
@@ -162,7 +157,7 @@ Qyllium.time = {
       }
     }
 
-    let checkForDay = _ => {
+    const checkForDay = _ => {
       for (let i = 0, l = str.length; i < l; i++) {
         if (daysFull.includes(str[i]) || daysAbb.includes(str[i])) {
           return str[i]
@@ -170,29 +165,25 @@ Qyllium.time = {
       }
     }
 
-    let dayIndex = checkForDay()
-    let time = checkForTime()
+    const dayIndex = checkForDay()
 
     if (dayIndex !== undefined) {
       let index = daysFull.includes(dayIndex) ? daysFull.indexOf(dayIndex) : daysAbb.indexOf(dayIndex)
 
       if (string.split(' ')[index - 1] === 'next') index += 7
-
-      date = new Date(Date.parse(Date.prototype.addDays.call(new Date(), Math.abs(new Date().getDay() - index))))
-    } else {
-      if (string.includes('today')) {
-        date = new Date()
+      date = moment().add(index, 'days')
+    } else if (contains(string, 'yesterday tomorrow')) {
+      if (string.includes('yesterday')) {
+        date = moment().subtract(1, 'days')
       } else if (string.includes('tomorrow')) {
-        date = new Date(Date.parse(Date.prototype.addDays.call(new Date(), 1)))
-        time = checkForTime()
+        date = moment().add(1, 'days')
       } else {
         return Qyllium.time.toHex(new Date(Date.parse(string)))
       }
     }
 
-    time += ` ${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
-    datetime = Date.parse(time)
+    const time = moment(checkForTime(), 'HH:mm')
 
-    return Qyllium.time.toHex(new Date(datetime))
+    return Qyllium.time.toHex(new Date(date.hour(time.hour()).minute(time.minutes())))
   }
 }
