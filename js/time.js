@@ -168,10 +168,15 @@ Qyllium.time = {
     const dayIndex = checkForDay()
 
     if (dayIndex !== undefined) {
-      let index = daysFull.includes(dayIndex) ? daysFull.indexOf(dayIndex) : daysAbb.indexOf(dayIndex)
-
-      if (string.split(' ')[index - 1] === 'next') index += 7
-      date = moment().add(index, 'days')
+      if (string.includes('next month')) {
+        date = moment().add(1, 'month')
+      } else if (string.includes('next week')) {
+        date = moment().add(7, 'days')
+      } else {
+        let index = daysFull.includes(dayIndex) ? daysFull.indexOf(dayIndex) : daysAbb.indexOf(dayIndex)
+        if (string.split(' ')[index - 1] === 'next') index += 7
+        date = moment().add(index, 'days')
+      }
     } else if (contains(string, 'yesterday tomorrow')) {
       if (string.includes('yesterday')) {
         date = moment().subtract(1, 'days')
@@ -180,6 +185,8 @@ Qyllium.time = {
       } else {
         return Qyllium.time.toHex(new Date(Date.parse(string)))
       }
+    } else {
+      date = moment(Date.parse(string))
     }
 
     const time = moment(checkForTime(), 'HH:mm')
