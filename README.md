@@ -1,4 +1,4 @@
-![Screenshot](img/screenshot.png)
+![Screenshot](screenshot.png)
 
 ![MIT](https://joshavanier.github.io/badges/svg/mit.svg)
 
