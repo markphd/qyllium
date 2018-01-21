@@ -266,21 +266,6 @@ var Qyllium = {
       document.getElementById('details').style.display = 'inline-block'
     }
 
-    const con = document.getElementById('console')
-    document.getElementById('cmd').addEventListener('submit', function() {
-      Qyllium.console.parse(con.value)
-      con.value = ''
-      con.focus()
-    })
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Tab') {
-        e.preventDefault()
-        Qyllium.toggleView()
-        document.getElementById('console').focus()
-      }
-    })
-
     if (user.journal.length === 0) return
     else Qyllium.data.parse(user.journal)
 
@@ -300,3 +285,18 @@ var Qyllium = {
     Qyllium.list(Qyllium.notes, 'noteList')
   }
 }
+
+const con = document.getElementById('console')
+document.getElementById('cmd').addEventListener('submit', function() {
+  Qyllium.console.parse(con.value)
+  con.value = ''
+  con.focus()
+})
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault()
+    Qyllium.toggleView()
+    document.getElementById('console').focus()
+  }
+})
